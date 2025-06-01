@@ -3,13 +3,17 @@ import os
 from dotenv import load_dotenv
 import pathlib
 from ollama import Client
+from telebot.types import InputFile, InputMediaPhoto
 from yandex_cloud_ml_sdk import YCloudML
+import telebot
 
 load_dotenv()
 
 ollama_host = os.getenv('OLLAMA_HOST') or ''
 ollama_key = os.getenv('KEY_OLLAMA') or ''
 yandex_key = os.getenv('KEY_SECRET') or ''
+telegram_key = os.getenv('KEY_TG') or ''
+telegram_chat_id = os.getenv('TELEGRAM_CHAT') or ''
 
 client = Client(
     host=ollama_host,
@@ -21,6 +25,7 @@ sdk = YCloudML(
     folder_id='b1g911dgehfvr5va5erg',
     auth=yandex_key
 )
+bot = telebot.TeleBot(token=telegram_key)
 
 def get_prompt(prompt: str) -> str | None:
     response = client.chat(
@@ -65,10 +70,16 @@ def main():
     message = get_prompt(prompt) or ''
     print('Generating image with: "' + message + '"')
 
-    # commented out for development
-    # result = generate_image(message)
-    # path = pathlib.Path('./image.jpeg')
-    # path.write_bytes(result.image_bytes)
+    result = generate_image(message)
+    path = pathlib.Path('./image.jpeg')
+    path.write_bytes(result.image_bytes)
+
+    with open('./image.jpeg', 'rb') as photo:
+        bot.send_photo(
+            chat_id=telegram_chat_id,
+            caption=message,
+            photo=photo
+        )
 
 if __name__ == '__main__':
     main()
