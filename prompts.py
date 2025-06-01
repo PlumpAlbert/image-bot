@@ -22,9 +22,9 @@ fireplace.
 """
 
 night_prompt="""
-The prompt should describe an evening. Make sure to include bed, sleepy animals
+The prompt should describe a nighttime. Make sure to include a bed, sleepy animal
 or anything else related to the bedtime. For example, an image of a sleeping animal
-in pajamas.
+in clothes.
 """
 
 def get_picture_prompt():
