@@ -36,10 +36,10 @@ def get_picture_prompt():
     """
     logging.info('# Generate prompt based on current time')
     current_time = datetime.datetime.now()
-    if current_time.hour > 20:
+    if current_time.hour >= 20:
         return general_prompt.replace('{{placeholder}}', night_prompt)
 
-    if current_time.hour > 17:
+    if current_time.hour >= 16:
         return general_prompt.replace('{{placeholder}}', evening_prompt)
 
     return general_prompt.replace('{{placeholder}}', morning_prompt)
