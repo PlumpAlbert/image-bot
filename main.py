@@ -1,12 +1,15 @@
 from __future__ import annotations
+import logging
 import os
 from dotenv import load_dotenv
 import pathlib
 from ollama import Client
-from telebot.types import InputFile, InputMediaPhoto
 from yandex_cloud_ml_sdk import YCloudML
 import telebot
 
+from prompts import get_picture_prompt
+
+logging.basicConfig(level=logging.INFO)
 load_dotenv()
 
 ollama_host = os.getenv('OLLAMA_HOST') or ''
@@ -67,14 +70,16 @@ The prompt should not contain any placeholders.
 """
 
 def main():
-    message = get_prompt(prompt) or ''
-    print('Generating image with: "' + message + '"')
+    message = get_prompt(get_picture_prompt()) or ''
+    logging.info(f'# Generating image with: "{message}"')
 
     result = generate_image(message)
     path = pathlib.Path('./image.jpeg')
     path.write_bytes(result.image_bytes)
+    logging.info('# Picture saved')
 
     with open('./image.jpeg', 'rb') as photo:
+        logging.info('# Sending picture to telegram')
         bot.send_photo(
             chat_id=telegram_chat_id,
             caption=message,
