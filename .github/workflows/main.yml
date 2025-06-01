@@ -41,6 +41,13 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            "KEY_ID=${{ secrets.KEY_ID }}"
+            "KEY_SECRET=${{ secrets.KEY_SECRET }}"
+            "KEY_TG=${{ secrets.KEY_TG }}"
+            "KEY_OLLAMA=${{ secrets.KEY_OLLAMA }}"
+            "OLLAMA_HOST=${{ secrets.OLLAMA_HOST }}"
+            "TELEGRAM_CHAT=${{ secrets.TELEGRAM_CHAT }}"
 
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v2
