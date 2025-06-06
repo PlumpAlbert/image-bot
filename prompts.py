@@ -16,9 +16,9 @@ to add custom text, like 'Good morning!'.
 """
 
 evening_prompt="""
-Make sure to instruct LLM to generate picture for the end of the day. It
-should be calm, soothing and relaxing. For example, an image of a sunset or a
-fireplace.
+Make sure to instruct LLM to generate picture for the end of the day. It should contain a character (i.e. human,
+animal etc.) that is going back home from work, and has a label 'Good evening!'.
+As a background use something calm, soothing and relaxing. For example, an image of a sunset or a fireplace.
 """
 
 night_prompt="""
