@@ -3,7 +3,6 @@ import logging
 import os
 from dotenv import load_dotenv
 import pathlib
-from ollama import Client
 from yandex_cloud_ml_sdk import YCloudML
 import telebot
 
@@ -12,36 +11,23 @@ from prompts import get_picture_prompt
 logging.basicConfig(level=logging.INFO)
 load_dotenv()
 
-ollama_host = os.getenv('OLLAMA_HOST') or ''
-ollama_key = os.getenv('KEY_OLLAMA') or ''
+yandex_folder_id = os.getenv('YA_FOLDER_ID') or ''
 yandex_key = os.getenv('KEY_SECRET') or ''
 telegram_key = os.getenv('KEY_TG') or ''
 telegram_chat_id = os.getenv('TELEGRAM_CHAT') or ''
 
-client = Client(
-    host=ollama_host,
-    headers={
-        'Authorization': 'Bearer ' + ollama_key
-    }
-)
 sdk = YCloudML(
-    folder_id='b1g911dgehfvr5va5erg',
+    folder_id=yandex_folder_id,
     auth=yandex_key
 )
 bot = telebot.TeleBot(token=telegram_key)
 
 def get_prompt(prompt: str) -> str | None:
-    response = client.chat(
-        model='llama3.2',
-        messages=[
-            {
-                'role': 'user',
-                'content': prompt
-            }
-        ]
-    )
+    model = sdk.models.completions("yandexgpt")
 
-    return response.message.content
+    response = model.run(prompt)
+
+    return response.alternatives[0].text
 
 def generate_image(prompt: str):
     """
@@ -63,14 +49,9 @@ def generate_image(prompt: str):
 
     return result
 
-prompt = """
-Write prompt that will be used for generative LLM which will generate image
-based on your text. Respond with only the prompt text and nothing else.
-The prompt should not contain any placeholders.
-"""
-
 def main():
-    message = get_prompt(get_picture_prompt()) or ''
+    text_prompt = get_picture_prompt()
+    message = get_prompt(text_prompt) or ''
     logging.info(f'# Generating image with: "{message}"')
 
     result = generate_image(message)
