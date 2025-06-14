@@ -1,31 +1,24 @@
 import logging
 import datetime
 
-general_prompt="""
-Write prompt that will be used for generative LLM which will generate image
-forbased on your text.
+general_prompt = """
+Ты профессиональный писатель. Твоя задача - написать текст, описывающий
+окружение и заставляющий испытывать эмоции. Текст, что ты напишешь, будет
+использован в генераторе изображений, учитывай это при составлении описания.
+
+Полученный текст должен соответствовать следующим ограничениям:
+
+- Должно содержать существ (людей, животных, вымышленных персонажей);
 {{placeholder}}
-Respond with only the prompt text and nothing else.
-The prompt should not contain any placeholders.
+
+В остальном - можешь придумывать что угодно.
 """
 
-morning_prompt="""
-The text that you will generate should inspire people to wake up from their beds
-in the morning. It should be fun, playful and childish. Be sure to instruct LLM
-to add custom text, like 'Good morning!'.
-"""
+morning_prompt='- тема изображения - "Доброе утро".'
 
-evening_prompt="""
-Make sure to instruct LLM to generate picture for the end of the day. It should contain a character (i.e. human,
-animal etc.) that is going back home from work, and has a label 'Good evening!'.
-As a background use something calm, soothing and relaxing. For example, an image of a sunset or a fireplace.
-"""
+evening_prompt='- тема изображения - "Хорошего вечера".'
 
-night_prompt="""
-The prompt should describe a nighttime. Make sure to include a bed, sleepy animal
-or anything else related to the bedtime. For example, an image of a sleeping animal
-in clothes.
-"""
+night_prompt='- тема изображения - "Спокойной ночи".'
 
 def get_picture_prompt():
     """
