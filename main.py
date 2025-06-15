@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import pathlib
 from yandex_cloud_ml_sdk import YCloudML
 import telebot
+from telebot.formatting import hcite
 
 from prompts import get_picture_prompt
 
@@ -63,7 +64,8 @@ def main():
         logging.info('# Sending picture to telegram')
         bot.send_photo(
             chat_id=telegram_chat_id,
-            caption=message,
+            caption=hcite(message, True, True),
+            parse_mode='html',
             photo=photo
         )
 
