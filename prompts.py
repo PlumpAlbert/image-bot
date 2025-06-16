@@ -2,23 +2,24 @@ import logging
 import datetime
 
 general_prompt = """
-Ты профессиональный писатель. Твоя задача - написать текст, описывающий
-окружение и заставляющий испытывать эмоции. Текст, что ты напишешь, будет
-использован в генераторе изображений, учитывай это при составлении описания.
+Твоя задача - написать текст для генератора изображений. Он должен содержать
+подробные инструкции о том, что и как нужно нарисовать на картинке.
 
-Полученный текст должен соответствовать следующим ограничениям:
+Указания для генератора должны соответствовать следующим ограничениям:
 
-- Должно содержать существ (людей, животных, вымышленных персонажей);
+- Обязательно должно содержать существо (людей, животных, вымышленных персонажей);
 {{placeholder}}
 
-В остальном - можешь придумывать что угодно.
+В остальном - можешь придумывать что угодно. Ответ должен содержать лишь
+текстовые инструкции для генератора.
 """
 
-morning_prompt='- тема изображения - "Доброе утро".'
+morning_prompt = '- тема изображения - "Доброе утро".'
 
-evening_prompt='- тема изображения - "Хорошего вечера".'
+evening_prompt = '- тема изображения - "Хорошего вечера".'
 
-night_prompt='- тема изображения - "Спокойной ночи".'
+night_prompt = '- тема изображения - "Спокойной ночи".'
+
 
 def get_picture_prompt():
     """
@@ -27,13 +28,12 @@ def get_picture_prompt():
     Returns:
         str: The generated picture prompt.
     """
-    logging.info('# Generate prompt based on current time')
+    logging.info("# Generate prompt based on current time")
     current_time = datetime.datetime.now()
     if current_time.hour >= 20:
-        return general_prompt.replace('{{placeholder}}', night_prompt)
+        return general_prompt.replace("{{placeholder}}", night_prompt)
 
     if current_time.hour >= 16:
-        return general_prompt.replace('{{placeholder}}', evening_prompt)
+        return general_prompt.replace("{{placeholder}}", evening_prompt)
 
-    return general_prompt.replace('{{placeholder}}', morning_prompt)
-
+    return general_prompt.replace("{{placeholder}}", morning_prompt)
